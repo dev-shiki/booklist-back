@@ -43,20 +43,17 @@ func ListBooks(c *gin.Context) {
 	query := "SELECT * FROM books WHERE 1=1"
 	var args []interface{}
 
-	// Filter by search text (title, author, or publisher)
 	if search := c.Query("search"); search != "" {
 		query += " AND (title LIKE ? OR author LIKE ? OR publisher LIKE ?)"
 		searchParam := "%" + search + "%"
 		args = append(args, searchParam, searchParam, searchParam)
 	}
 
-	// Filter by category
 	if category := c.Query("category_id"); category != "" {
 		query += " AND category_id = ?"
 		args = append(args, category)
 	}
 
-	// Filter by date range
 	if startDate := c.Query("start_date"); startDate != "" {
 		query += " AND publication_date >= ?"
 		args = append(args, startDate)
